@@ -1,0 +1,41 @@
+{
+  "name": "codingexercises",
+  "version": "1.0.0",
+  "description": "Coding Exercies for Availity",
+  "main": "lispParser.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "registration:start": "node exercises/registrationInterface/server.js",
+    "registration:compile-watch": "npx babel --watch exercises/registrationInterface/jsx/*.jsx --out-dir . --presets react-app/prod",
+    "registration:build": "npx webpack-cli --config exercises/registrationInterface/webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/7jerryl/CodingExercises.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/7jerryl/CodingExercises/issues"
+  },
+  "homepage": "https://github.com/7jerryl/CodingExercises#readme",
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-react": "^7.8.3",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^8.0.6",
+    "express": "^4.17.1",
+    "mocha": "^7.0.1",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
+}
