@@ -1,9 +1,9 @@
 /**
  * FIELD PARAMETER DEFAULTS
- * @param {String} type
- * @param {String} pattern
- * @param {String} placeholder
- * @param {String} icon
+ * @param {string} type
+ * @param {string} pattern
+ * @param {string} placeholder
+ * @param {string} icon
  */
 const getFieldParams = (
   type = 'text',
@@ -50,7 +50,7 @@ const fieldParams = {
   'Email Address': getFieldParams(
     'email',
     "^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
-    null,
+    'Example: JohnDoe@domain.com',
     'envelope'
   ),
 };
@@ -60,15 +60,19 @@ const fieldParams = {
  */
 const fieldNames = Object.keys(fieldParams);
 const initialState = fieldNames.reduce(
-  (fields, field) =>
-    Object.assign(fields, { [field]: { value: '', state: 0 } }),
-  {}
+  (state, field) => {
+    Object.assign(state.fields, {
+      [field]: { value: '', state: 0 },
+    });
+    return state;
+  },
+  { submission: null, fields: {} }
 );
 const STATE_COLORS = Object.freeze(['', ' is-danger', ' is-success']);
 
 /**
  * PHONE FORMAT HELPER
- * @param {Object} event
+ * @param {object} event
  */
 const formatPhoneNumber = event => {
   const result = event.target.value.match(/\d/g) || [];
@@ -88,6 +92,30 @@ const formatPhoneNumber = event => {
 const formatters = {
   'NPI Number': event => event.target.value.replace(/\D/g, '').slice(0, 10),
   'Telephone Number': formatPhoneNumber,
+};
+
+/**
+ * SET INFO IN MIDDLE OF PAGE
+ */
+const setInfo = info => {
+  const entries = Object.entries(info);
+  return (
+    <div className="columns">
+      <div className="column is-4 has-background-white-ter"></div>
+      <div className="column is-4 has-background-white-ter">
+        <section className="hero is-fullheight">
+          <div className="hero-body">
+            <div className="container">
+              <div className="box has-background-warning">
+                Submitted: <pre>{JSON.stringify(info, null, 4)}</pre>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div className="column is-4 has-background-white-ter"></div>
+    </div>
+  );
 };
 
 /**
@@ -113,27 +141,31 @@ class RegistrationInterface extends React.Component {
       const value = newValue(event);
       const state = value.length > 0 ? (regexValid ? 2 : 1) : 0;
 
-      this.setState({
+      Object.assign(this.state.fields, {
         [fieldName]: { value, state },
       });
+      this.setState(this.state);
     };
   }
 
   handleSubmit(event) {
-    const entries = Object.entries(this.state);
+    const entries = Object.entries(this.state.fields);
     const submission = entries.reduce(
       (map, [key, { value }]) => Object.assign(map, { [key]: value }),
       {}
     );
-    alert('Submitted information: ' + JSON.stringify(submission, null, 4));
+
+    this.setState({ submission });
     event.preventDefault();
   }
 
   textBox(fieldName) {
-    const stateColor = STATE_COLORS[this.state[fieldName].state];
+    const stateColor = STATE_COLORS[this.state.fields[fieldName].state];
     const textColor = stateColor.replace('is', 'has-text');
-    const checkState = this.state[fieldName].state === 2 ? '' : ' is-hidden';
-    const timesState = this.state[fieldName].state === 1 ? '' : ' is-hidden';
+    const checkState =
+      this.state.fields[fieldName].state === 2 ? '' : ' is-hidden';
+    const timesState =
+      this.state.fields[fieldName].state === 1 ? '' : ' is-hidden';
     return (
       <div className="field" key={fieldName}>
         <p className="control has-icons-left has-icons-right">
@@ -145,7 +177,7 @@ class RegistrationInterface extends React.Component {
             required={fieldParams[fieldName].required}
             title={fieldParams[fieldName].title}
             onChange={this.handleChange(fieldName)}
-            value={this.state[fieldName].value}
+            value={this.state.fields[fieldName].value}
           />
           <span className="icon is-small is-left">
             <i className={fieldParams[fieldName].format}></i>
@@ -164,26 +196,28 @@ class RegistrationInterface extends React.Component {
   }
 
   render() {
-    const fields = Object.keys(this.state);
-    return (
-      <div class="columns">
-        <div class="column is-4 has-background-white-ter"></div>
-        <div class="column is-4 has-background-white-ter">
-          <section class="hero is-fullheight">
-            <div class="hero-body">
-              <div class="container">
-                <div class="box has-background-warning">
+    const fields = Object.keys(this.state.fields);
+    return !this.state.submission ? (
+      <div className="columns">
+        <div className="column is-4 has-background-white-ter"></div>
+        <div className="column is-4 has-background-white-ter">
+          <section className="hero is-fullheight">
+            <div className="hero-body">
+              <div className="container">
+                <div className="box has-background-warning">
                   <form onSubmit={this.handleSubmit}>
                     {fields.map(this.textBox)}
-                    <input type="submit" value="Submit" />
+                    <input type="submit" value="Register" />
                   </form>
                 </div>
               </div>
             </div>
           </section>
         </div>
-        <div class="column is-4 has-background-white-ter"></div>
+        <div className="column is-4 has-background-white-ter"></div>
       </div>
+    ) : (
+      setInfo(this.state.submission)
     );
   }
 }
