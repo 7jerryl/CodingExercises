@@ -4,10 +4,12 @@
   "description": "Coding Exercies for Availity",
   "main": "lispParser.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha tests/**/*.spec.js",
     "registration:start": "node exercises/registrationInterface/server.js",
     "registration:compile-watch": "npx babel --watch exercises/registrationInterface/jsx/*.jsx --out-dir . --presets react-app/prod",
-    "registration:build": "npx webpack-cli --config exercises/registrationInterface/webpack.config.js"
+    "registration:build": "npx webpack-cli --config exercises/registrationInterface/webpack.config.js",
+    "csv:transform": "node exercises/csvTransformer/csvTransformer.js",
+    "lisp:validate": "node exercises/lispValidator/lispValidator.js"
   },
   "repository": {
     "type": "git",
@@ -26,15 +28,19 @@
     "singleQuote": true
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "chai": "^4.2.0",
+    "csv": "^5.3.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "lodash": "^4.17.15",
+    "mocha": "^7.0.1",
+    "rewire": "^4.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/preset-react": "^7.8.3",
     "babel-cli": "^6.26.0",
     "babel-loader": "^8.0.6",
-    "express": "^4.17.1",
-    "mocha": "^7.0.1",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
   }
