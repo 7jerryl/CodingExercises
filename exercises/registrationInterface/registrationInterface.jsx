@@ -207,8 +207,8 @@ class RegistrationInterface extends React.Component {
                 <div className="box has-background-warning">
                   <form onSubmit={this.handleSubmit}>
                     {fields.map(this.textBox)}
-                    <div class="buttons has-addons is-centered">
-                      <button class="button has-background-white-ter">
+                    <div className="buttons has-addons is-centered">
+                      <button className="button has-background-white-ter">
                         Register
                       </button>
                     </div>
