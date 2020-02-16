@@ -19,7 +19,7 @@ Alternatively, you can use `npm test` to run a full suite of tests against Exerc
 
 ### Exercise 2
 
-To verify the second exercise you can execute the command `npm run registration:start`/\
+To verify the second exercise you can execute the command `npm run registration:start`\
 This will initialize a server at port **3000**, to which you can connect by visiting **http://localhost:3000** from any browser.\
 If for any reason you have an error which might indicate that the port is blocked, you can modify the `.env` file in this directory\
 so that the **PORT** variable references an open port on your machine.
