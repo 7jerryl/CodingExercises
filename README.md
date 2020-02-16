@@ -31,4 +31,4 @@ All but the `Business Address` are validated using a regular expression. Tool hi
 
 To verify the third exercise you can execute the command `npm run csv:transform -- --file "<filename>" --outDir "<outputDirectory>"`\
 where `<filename>` should be referencing a valid csv file within any directory. and `<outDir>` should reference a valid output directory.\
-Alternatively, `--outDir "<outputDirectory>"` may be ommited, and the default output location will be within `exercises/csvTransformer`.
+Alternatively, `--outDir "<outputDirectory>"` may be omitted, and the default output location will be within `exercises/csvTransformer`.
